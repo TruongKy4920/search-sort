@@ -12,7 +12,7 @@ std::ofstream output("output.txt");
 int n,x;
 int a[MAX];
 bool checkSNT(int x){
-    for(int i=2;i<sqrt(n);i++){
+    for(int i=2;i<sqrt(x);i++){
         if(x%i==0) return 0;
     }
     return 1;
