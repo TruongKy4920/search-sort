@@ -11,24 +11,27 @@ std::ifstream input("input.txt");
 std::ofstream output("output.txt");
 int n,x;
 int a[MAX];
-bool checkSNT(int x){
-    for(int i=2;i<sqrt(n);i++){
-        if(x%i==0) return 0;
-    }
-    return 1;
-}
-void tim_day_nguyento(){
-    for(int i=0;i<n;i++){
-        if(checkSNT(a[i])==1) output<<a[i]<<" ";
-    }
+int binary_searh_recur(int s,int e){ 
+        int mid = (s+e)/2;
+        if(a[mid]==x) return a[mid];
+
+        if(x> a[mid]){
+            s=mid+1;
+            return binary_searh_recur(s,e);
+        } 
+        else {
+            e=mid-1;
+            return binary_searh_recur(s,e);
+        } 
+ return -1;
 }
 void solution(){
-   tim_day_nguyento();
+    output<<binary_searh_recur(0,n);
 }
 
 int main(){
     std::string line;
-    input>>n;
+    input>>n>>x;
       for(int i=0;i<n;i++){
         input>>a[i];
       }
