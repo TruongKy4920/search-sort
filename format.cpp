@@ -9,40 +9,45 @@ using namespace std;
 
 std::ifstream input("input.txt");
 std::ofstream output("output.txt");
-int n,countsquare; 
+
 int a[MAX];
 int b[MAX];
-int n;
-int a[MAX];
+int n,m;
 
-int solution() {
-    int i = 0; // i will be the candidate root (0, 1, 2, 3, ...)
-    int idx = 0; // pointer to traverse array a[]
-
-    while (true) {
-        int perfect_square = i * i;
-
-        if (idx < n && a[idx] < perfect_square) {
-            idx++;
-        } else if (idx < n && a[idx] == perfect_square) {
-            i++;
-            idx++;
-        } else {
-            // Either perfect_square not found in array OR idx >= n (end of array)
-            return perfect_square;
+int layMAX(){
+    for(int i=1;i<n;i++){
+        if(a[0]<a[i]){
+            a[0]=a[i];
         }
     }
+    return a[0];
+}
+int layMIN(){
+    for(int i=1;i<m;i++){
+        if(b[0]>b[i]){
+            b[0]=b[i];
+        }
+    }
+    return b[0];
+}
+
+int solution() {
+    int x=layMAX();
+    int y=layMIN();
+    return x*y;
 }
 
 int main(){
     std::string line;
-    input>>n;
+    input>>n>>m;
       for(int i=0;i<n;i++){
         input>>a[i];
       }
-     
+     for(int i=0;i<m;i++){
+        input>>b[i];
+      }
     
-    solution();
+    output<<solution();
 
     
       
