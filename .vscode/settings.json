@@ -4,6 +4,7 @@
         "iosfwd": "cpp",
         "xutility": "cpp",
         "iterator": "cpp",
-        "xmemory": "cpp"
+        "xmemory": "cpp",
+        "algorithm": "cpp"
     }
 }
