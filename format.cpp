@@ -12,39 +12,59 @@ using namespace std;
 std::ifstream input("input.txt");
 std::ofstream output("output.txt");
 
-int n, p;
+int n;
 int a[MAX];
-void swap(int &a, int &b){
-    int temp= a;
-    a=b;
-    b=temp;
-}
+void combine(int start,int mid, int end){
+    //so luong phan tu n1 mang ben trai L[MAX] la tu start den mid
+    int n1=mid-start+1;
+     //so luong phan tu n2 mang ben phai R[MAX] la tu mid+1 den end
+    int n2=end-mid;
 
+    int L[MAX],R[MAX]; //tao 2 mang: L luu tu index 0-mid, R luu tu index mid+1 -> end
+    for(int i=0;i<n1;i++) L[i]=a[start+i];
 
-void solution() {
-    bool swapped = true;
-    while(swapped==true){
-        swapped = false;
-        for(int i=0;i<=n-2;i++){
-            if(a[i]>a[i+1]) {
-                swap(a[i],a[i+1]);
-               
-                swapped=true;
-            }
+    for(int i=0;i<n2;i++) R[i]=a[mid+1+i];
+
+    //Tron cac phan tu cua 2 mang
+    int j=0;
+    int k=0;
+    int i=start;
+    for(; j<n1 && k<n2 ; i++){
+        if(L[j]<R[k]) {
+            a[i]=L[j];
+            j++;
+        }
+        else {
+            a[i]=R[k];
+            k++;
         }
     }
+    //khi ma j hoac k dat toi n1 || n2 truoc thi for se bi thoat
+    //xu ly cac phan tu con du bang cach lay tiep cai gia tri i
+    //cua mang a de add cac phan du vao;
+    for(;j<n1;j++) a[i++]= L[j];
+    for(;k<n2;k++) a[i++]= R[k];
 
 
 }
-
-
+void merge_sort(int start, int end){
+    if(start == end) return;
+    int mid = (start+end)/2;
+    //chia doi mang
+    merge_sort(start,mid); //lay mang con chia doi tiep
+    merge_sort(mid+1,end);  //lay mang con chia doi tiep
+    combine(start,mid,end); //gop va tron mang lai
+}
+void solution(){
+    merge_sort(0,n-1);
+}
 int main(){
     std::string line;
     input>>n;
       for(int i=0;i<n;i++){
         input>>a[i];
       }
-     solution();
+    solution();
     for(int i=0;i<n;i++){
          output<<a[i]<<" ";
     }
