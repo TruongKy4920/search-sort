@@ -4,61 +4,41 @@
 #include <sstream>
 #include <iomanip>
 #include <math.h>
-#include <vector>
-#include <algorithm>
-
 #define MAX 100
 using namespace std;
 
 std::ifstream input("input.txt");
 std::ofstream output("output.txt");
-
-int n;
+int n,x;
 int a[MAX];
-vector<int> result={1,3,6,2};
-bool find(int x){
-   
-    for(int i=0;i<result.size();i++){
-        if(result[i]==x) return true;
-    }
-    return false;
-}
-      
-int main() {
-    result.begin();
-    result.end();
-    
+int binary_searh_recur(int s,int e){ 
+        if(s<=e) return -1;
+        int mid = (s+e)/2;
+        if(a[mid]==x) return a[mid];
 
-    // input >> n;
-   
+        if(x> a[mid]){
+            s=mid+1;
+            return binary_searh_recur(s,e);
+        } 
+        else {
+            e=mid-1;
+            return binary_searh_recur(s,e);
+        } 
+}
+void solution(){
+    output<<binary_searh_recur(0,n);
+}
+
+int main(){
+    std::string line;
+    input>>n>>x;
+      for(int i=0;i<n;i++){
+        input>>a[i];
+      }
+    solution();
+
     
-    // // Đọc mảng A
-    // for (int i = 0; i < n; i++) {
-    //     int num;
-    //      input >> num;
-        
-    //     // Tách các chữ số của num
-    //     while (num > 0) {
-    //         if(find(num%10)==false){
-    //         result.push_back(num % 10);  // Lấy chữ số cuối cùng
-    //         num /= 10;
-    //         }
-    //         else{
-    //             num/=10;
-    //         }
-           
-            
-    //     }
-    // }
-    
-    // // Sắp xếp các chữ số
-    // sort(result.begin(), result.end());
-    
-    // // In kết quả
-    // for (int i = 0; i < result.size(); i++) {
-    //     cout << result[i] << " ";
-    // }
-    // cout << endl;
-    
-    // return 0;
-} 
+      
+      
+      
+}
