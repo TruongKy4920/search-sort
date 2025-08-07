@@ -12,7 +12,7 @@ std::ofstream output("output.txt");
 int n,x;
 int a[MAX];
 int binary_searh_recur(int s,int e){ 
-  
+        if(s<=e) return -1;
         int mid = (s+e)/2;
         if(a[mid]==x) return a[mid];
 
@@ -24,7 +24,6 @@ int binary_searh_recur(int s,int e){
             e=mid-1;
             return binary_searh_recur(s,e);
         } 
- return -1;
 }
 void solution(){
     output<<binary_searh_recur(0,n);
