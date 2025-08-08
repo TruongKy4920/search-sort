@@ -4,7 +4,6 @@
 #include <sstream>
 #include <iomanip>
 #include <math.h>
-#include <map>
 #include <algorithm>
 
 #define MAX 100
@@ -14,61 +13,65 @@ std::ifstream input("input.txt");
 std::ofstream output("output.txt");
 
 int n;
-
 int a[MAX];
-map <int,int> m;
-int length=0;
-void swap(int &a,int &b){
-    int temp=a;
-    a=b;
-    b=temp;
-}
-int partition(int start, int end){
-    int pivot_value=a[end];
-    int i_divider=start-1;
-    for(int i=start;i<end;i++){
-        if(m[ a[i] ] > m[ pivot_value ]) 
-            swap(a[++i_divider],a[i]);
-        else if(m[ a[i] ] == m[ pivot_value ] && a[i]< pivot_value) 
-            swap(a[++i_divider],a[i]);
-    }
-    swap(a[i_divider+1],a[end]);
-    return i_divider+1;
-}
-void quick_sort(int start,int end){
-    if(start>=end) return;
+void combine(int start,int mid, int end){
+    //so luong phan tu n1 mang ben trai L[MAX] la tu start den mid
+    int n1=mid-start+1;
+     //so luong phan tu n2 mang ben phai R[MAX] la tu mid+1 den end
+    int n2=end-mid;
 
-    int pivot= partition(start,end);
-    quick_sort(start,pivot-1);
-    quick_sort(pivot+1,end);
-}
-int main() {
+    int L[MAX],R[MAX]; //tao 2 mang: L luu tu index 0-mid, R luu tu index mid+1 -> end
+    for(int i=0;i<n1;i++) L[i]=a[start+i];
 
-    input >> n;
-    int x;
-    //dem so lan moi phan tu xuat hien bang map
-    for(int i=0;i<n;i++){
-        input>>x; 
-        if(m.count(x)==0) m[x]=1; //ktra key x co trong map không
-        //nếu chưa thì cho key đó vào map với value 1;
-        else  m[x]++; //sau khi cho key vao map -> moi lan key x xuat hien
-            //tang value cua key x len 1 trong map  
-    }
-    
-    //sau khi liet ke cac lan xuat hien cua key x thi ta dung mang a
-    //de luu lai cac key khac nhau trong map
-    for(const auto& pair :m){
-        int key=pair.first; //lay key tu trong map;
-        a[length++]= key; //luu Key vao mang a de sort
-    }
-   
-    //sap xep mang theo yeu cau cua de
-    quick_sort(0,length-1);
-   
-    for(int i=0;i<length;i++){
-        for(int j=0;j<m[a[i]];j++){
-            output<<a[i]<<" ";
+    for(int i=0;i<n2;i++) R[i]=a[mid+1+i];
+
+    //Tron cac phan tu cua 2 mang
+    int j=0;
+    int k=0;
+    int i=start;
+    for(; j<n1 && k<n2 ; i++){
+        if(L[j]<R[k]) {
+            a[i]=L[j];
+            j++;
+        }
+        else {
+            a[i]=R[k];
+            k++;
         }
     }
-   
+    //khi ma j hoac k dat toi n1 || n2 truoc thi for se bi thoat
+    //xu ly cac phan tu con du bang cach lay tiep cai gia tri i
+    //cua mang a de add cac phan du vao;
+    for(;j<n1;j++) a[i++]= L[j];
+    for(;k<n2;k++) a[i++]= R[k];
+
+
 }
+void merge_sort(int start, int end){
+    if(start == end) return;
+    int mid = (start+end)/2;
+    //chia doi mang
+    merge_sort(start,mid); //lay mang con chia doi tiep
+    merge_sort(mid+1,end);  //lay mang con chia doi tiep
+    combine(start,mid,end); //gop va tron mang lai
+}
+void solution(){
+    merge_sort(0,n-1);
+    
+}
+int main(){
+    std::string line;
+    input>>n;
+      for(int i=0;i<n;i++){
+        input>>a[i];
+      }
+    solution();
+    output<<a[1]-a[0];
+    
+  
+
+    
+      
+      
+      
+} 
